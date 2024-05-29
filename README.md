@@ -47,6 +47,6 @@ The temperature was applied to all layers except input 1 and 2, output 9, 10 and
 
 # Patreon
 
-Consider giving an incentive to contributors.
+Give an incentive to contributors:
 
 https://www.patreon.com/extraltodeus
