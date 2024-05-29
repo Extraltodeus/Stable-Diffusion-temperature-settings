@@ -24,7 +24,7 @@ Requires pytorch 2.3 and above.
 
 Changing the UNET temperature allows to obtain better results a different resolutions. While it is not the full solution to the scaling issues of Stable Diffusion, it is a strong clue indicating the possibility to sample at much higher (or lower) resolutions.
 
-### Here using SDXL at a resolution of 328x328. First row is temperature at 1, second and third using the dynamic scaled attention.
+### Here using SDXL at a resolution of 328x328. First row temperature at 1, second row using dynamic scaled attention:
 
 ![image_grid](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/7b5b2ffb-f621-4eca-9f97-04f78c2eaf7c)
 
