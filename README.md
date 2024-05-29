@@ -8,7 +8,7 @@ Provides the ability to set the temperature for both UNET and CLIP. For ComfyUI.
 ## Specifities
 
 - The CLIP patch ignores the connections and patches the model within the memory. Simply disconnecting it does not revert the behavior. To revert to default behavior set it at 1 or reload the model without the node connected. It is the only node ignoring the connections and does not modify anything but the connected CLIP model.
-- For SD1 and SDXL nodes: settings the temperature at zero will use a dynamic scale proportional to the resolution. It is good for lower resolutions but not on point for higher.
+- For SD1 and SDXL nodes: **settings the temperature at zero will use a dynamic scale proportional to the resolution**. It is good for lower resolutions but not on point for higher.
 
 ## Usage
 
