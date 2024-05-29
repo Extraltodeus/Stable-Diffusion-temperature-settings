@@ -32,12 +32,6 @@ Changing the UNET temperature allows to obtain better results a different resolu
 
 ![image_grid](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/62292e57-ac11-4e9b-99e8-02084e95dc17)
 
-### Other simple example with SD 1.5, with/without are obvious enough (these two are workflows):
-
-![01629UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/d6371d3f-ea38-40e4-8215-432214027a78)
-
-![01630UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/967ddf3b-da39-4dca-bd48-02a2f7e28ee0)
-
 ### Lost workflows for these as they were done during testing but proves the idea of making SD better at different resolutions:
 
 The temperature was applied to all layers except input 1 and 2, output 9, 10 and 11. At 0.71. Only on self-attention.
@@ -46,3 +40,8 @@ The temperature was applied to all layers except input 1 and 2, output 9, 10 and
 ![combined_pair_1](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/84fed1e4-a7ba-4f2a-8562-e3573f0aab8f)
 ![combined_pair_3](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/c6703c21-0d63-404e-9bf8-3a7c580f59e7)
 
+### Other simple example with SD 1.5, with/without are obvious enough (these two are workflows):
+
+![01629UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/d6371d3f-ea38-40e4-8215-432214027a78)
+
+![01630UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/967ddf3b-da39-4dca-bd48-02a2f7e28ee0)
