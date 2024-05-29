@@ -16,6 +16,8 @@ Like any other model patch:
 
 ![image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/32b73433-df6a-4c49-99a6-5ddf21a4777a)
 
+- Pay attention to not use SD1 nodes on SDXL and vice-versa or you will get a key not found error.
+
 ## Requirements:
 
 Requires pytorch 2.3 and above.
