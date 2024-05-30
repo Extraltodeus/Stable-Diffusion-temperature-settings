@@ -36,6 +36,7 @@ It is imperfect for resolutions higher than 1.5x as the amplification becomes to
 
 There seem to be a proportional trend. I would however need faster hardware to be able to generate more samples and become able to detect it. I opened the discussions for this repository if you feel like sharing your best settings.
 
+I have a feeling with my current ongoing tests that the attention heads may be the key. Sampling at 3072x3072 even with a wide range of different temperatures seems to give at best what things looks like when you lower the amount of attention heads. If this is it, resolution will not be an issue anymore.
 
 
 # Examples
