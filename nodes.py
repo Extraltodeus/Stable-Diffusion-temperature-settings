@@ -198,7 +198,7 @@ class temperatureForScaleAsFloat:
     def simple_output(self, base_resolution,target_width,target_height,multiply_value_by,shift_value_by,print_value):
         dsa = ((base_resolution / (target_width*target_height) ** 0.5) ** 0.5) * multiply_value_by + shift_value_by
         if print_value:
-            print(f"Dynamic scale attention is {dsa}")
+            print(f"\nDynamic scale attention is {dsa}\n")
         return (dsa,)
 
 UnetTemperaturePatchSDXL = type("Unet Temperature SDXL", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": True})
