@@ -88,6 +88,10 @@ Workflow:
 - Does it work for "..." : I have no idea. If it's another model then the dynamic scale is not set yet so you can not set it at 0. You can however use the node named "Unet Temperature any model" and set the temperature manually!
 - It is compatible with "...": I can only say that if you want to use the Automatic-CFG with it, you should plug these nodes BEFORE it. For the other patches I do not know. Some may replace the attention function if they do patch the transformer layers.
 - Which are the best values? This is uncharted territory. The CLIP temperature is more forgetful. The UNET a lot less, yet something near 0.71 seems overall
+- Out of memory error: It uses pytorch attention. It comes from you ;)
+
+
+
 # Patreon
 
 Give an incentive to contributors:
