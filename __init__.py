@@ -7,4 +7,5 @@ NODE_CLASS_MAPPINGS = {
     "Unet Temperature SDXL per layer":UnetTemperaturePatchSDXLpl,
     "Unet Temperature SD1 per layer" :UnetTemperaturePatchSD15pl,
     "CLIP Temperature":CLIPTemperaturePatch,
+    "Dynamic scale as float":temperatureForScaleAsFloat,
 }
