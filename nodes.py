@@ -174,6 +174,33 @@ class CLIPTemperaturePatch:
         
         return (clip,)
 
+class temperatureForScaleAsFloat:
+    def __init__(self):
+        pass
+    
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "base_resolution" : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
+                "target_width"    : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
+                "target_height"   : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
+                "multiply_value_by" : ("FLOAT", {"default": 1, "min": 0, "max": 100,"step": 0.01}),
+                "shift_value_by"  : ("FLOAT", {"default": 0, "min": -100,"max": 100,"step": 0.01}),
+                "print_value" : ("BOOLEAN", {"default": False}),
+            }
+        }
+
+    FUNCTION = "simple_output"
+    RETURN_TYPES = ("FLOAT",)
+    CATEGORY = "model_patches/Temperature"
+    
+    def simple_output(self, base_resolution,target_width,target_height,multiply_value_by,shift_value_by,print_value):
+        dsa = ((base_resolution / (target_width*target_height) ** 0.5) ** 0.5) * multiply_value_by + shift_value_by
+        if print_value:
+            print(f"Dynamic scale attention is {dsa}")
+        return (dsa,)
+
 UnetTemperaturePatchSDXL = type("Unet Temperature SDXL", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": True})
 UnetTemperaturePatchSD15 = type("Unet Temperature SD1",  (UnetTemperaturePatch,), {"TOGGLES": layers_SD15,"MODEL_NAME":"SD1", "ANY_MODEL": True,})
 UnetTemperaturePatchSDXLpl = type("Unet Temperature SDXL per layer", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": False})
