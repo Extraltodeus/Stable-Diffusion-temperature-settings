@@ -71,6 +71,17 @@ The temperature was applied to all layers except input 1 and 2, output 9, 10 and
 ![combined_pair_3](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/c6703c21-0d63-404e-9bf8-3a7c580f59e7)
 
 
+## Troubleshooting / Q and A
+
+- KeyError: 'input_1': You mixed up the SDXL/SD1 nodes
+- Something the 'scale' argument: You need to update pytorch
+- Windows error message when starting ComfyUI: You updated pytorch but not xformers (that update goes fast)
+- Images are more burned than my pizza when I code: temperature too low
+- Images are blurry like I removed my glasses: temperature too high
+- Does it work for "..." : I have no idea. If it's another model then the dynamic scale is not set yet so you can't set it at 0. You can however use the node that says it's for any model and see what it gives.
+- It is compatible with "...": I can only say that if you want to use the Automatic-CFG with it, you should plug these nodes BEFORE it. For the other patches I do not know. Some may replace the attention function if they do patch the transformer layers.
+
+
 # Patreon
 
 Give an incentive to contributors:
