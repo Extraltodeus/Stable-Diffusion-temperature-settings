@@ -22,6 +22,10 @@ Like any other model patch:
 
 - Pay attention to not use SD1 nodes on SDXL and vice-versa or you will get a key not found error.
 
+----
+Most things below relates to the relation with resolution.
+----
+
 ## Resolution unlocking side-effect:
 
 Changing the UNET temperature allows to obtain better results a different resolutions.
