@@ -47,8 +47,9 @@ There seem to be a proportional trend. I would however need faster hardware to b
 ![03296UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/bf6d7ef0-9c18-4436-8037-6b60a6a37ce2)![03297UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/3379081c-2c4e-4af0-ba92-b57031b3845b)![03298UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/10991fbe-4123-46d2-8069-cfaece9e77ec)
 
 
+### SDXL 1536x1536, single pass, 12 steps
 
-
+![03302UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/5417058f-f5c7-4d8b-838f-a13962e6d85d)![03312UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/56144013-d85c-430d-a256-6f752aee4799)
 
 
 ### Here using SDXL at a resolution of 328x328. First row temperature at 1, second row using dynamic scaled attention:
