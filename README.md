@@ -71,7 +71,7 @@ The temperature was applied to all layers except input 1 and 2, output 9, 10 and
 
 ### CLIP temperature at 0.75, 1 and 1.25. Prompt "a bio-organic living plant spaceship"
 
-![combined_image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/abf99742-6c51-43c6-8cab-a0cb3eb5532c)
+![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
 
 Workflow:
 
