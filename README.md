@@ -26,6 +26,14 @@ Like any other model patch:
 
 Changing the UNET temperature allows to obtain better results a different resolutions.
 
+It needs to be higher for smaller resolutions and lower for higher resolutions.
+
+To this effect I wrote a dynamic scaling temperature function. It sets itself relatively to the selected resolution.
+
+It is imperfect for higher resolutions but very effective for smaller.
+
+There seem to be a proportional trend. I would however need faster hardware to be able to generate more samples and become able to detect it. I opened the discussions for this repository if you feel like sharing your best settings.
+
 # Examples
 
 ### Here using SDXL at a resolution of 328x328. First row temperature at 1, second row using dynamic scaled attention:
