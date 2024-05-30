@@ -33,10 +33,13 @@ def cprint(var):
 def dynamic_scale_attention(layer_name, model_name, q_size_1, q_size_2, **kwargs):
     return 1 / (math.sqrt(q_size_1) * (SD_layer_dims[model_name][layer_name] ** 0.5 / q_size_2 ** 0.5) ** 0.5)
 
+def dynamic_scale_attention_light(layer_name, model_name, q_size_1, q_size_2, **kwargs):
+    return 1 / (math.sqrt(q_size_1  * (SD_layer_dims[model_name][layer_name] ** 0.5 / q_size_2 ** 0.5) ** 0.5))
+
 def temp_non_zero_div(layer_name, model_name, q_size_1, q_size_2, **kwargs):
     return 1 / (math.sqrt(q_size_1) * EPSILON)
 
-auto_temp_methods = {"dsa": dynamic_scale_attention, "clip":temp_non_zero_div}
+auto_temp_methods = {"normal": dynamic_scale_attention, "light": dynamic_scale_attention_light, "clip":temp_non_zero_div}
 
 class temperature_patcher():
     def __init__(self, temperature, layer_name = "", model_name="", eval_string = "", method="medium", base_resolution=(512,512), target_resolution=(512,512)):
@@ -89,7 +92,8 @@ class UnetTemperaturePatch:
         required_inputs["model"] = ("MODEL",)
         required_inputs["Temperature"]  = ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01, "round": 0.01})
         required_inputs["Attention"]    = (["both","self","cross"],)
-        # required_inputs["Method"]       = (["strong","medium","light"],)
+        if s.MODEL_NAME in ["SDXL","SD1"]:
+            required_inputs["DSA_intensity"] = (["normal","light"],)
         # required_inputs["eval_string"] = ("STRING", {"multiline": True})
         return {"required": required_inputs}
     
@@ -102,7 +106,7 @@ class UnetTemperaturePatch:
 
     CATEGORY = "model_patches/Temperature"
 
-    def patch(self, model, Temperature, Attention, Method="dsa", eval_string="", **kwargs):
+    def patch(self, model, Temperature, Attention, DSA_intensity="normal", eval_string="", **kwargs):
         model_name = self.__class__.MODEL_NAME
         any_model  = self.__class__.ANY_MODEL
 
@@ -120,7 +124,7 @@ class UnetTemperaturePatch:
             if current_level in levels and toggle_enabled:
                 b_number = int(key.split("_")[1])
                 parameters_output[current_level].append(b_number)
-                patcher = temperature_patcher(Temperature,method=Method if model_name in ["SDXL","SD1"] else "clip",layer_name=key,model_name=model_name,eval_string=eval_string)
+                patcher = temperature_patcher(Temperature,method=DSA_intensity if model_name in ["SDXL","SD1"] else "clip",layer_name=key,model_name=model_name,eval_string=eval_string)
 
                 if Attention in ["both","self"]:
                     m.set_model_attn1_replace(patcher.pytorch_attention_with_temperature, current_level, b_number)
@@ -174,4 +178,4 @@ UnetTemperaturePatchSDXL = type("Unet Temperature SDXL", (UnetTemperaturePatch,)
 UnetTemperaturePatchSD15 = type("Unet Temperature SD1",  (UnetTemperaturePatch,), {"TOGGLES": layers_SD15,"MODEL_NAME":"SD1", "ANY_MODEL": True,})
 UnetTemperaturePatchSDXLpl = type("Unet Temperature SDXL per layer", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": False})
 UnetTemperaturePatchSD15pl = type("Unet Temperature SD1 per layer",  (UnetTemperaturePatch,), {"TOGGLES": layers_SD15,"MODEL_NAME":"SD1", "ANY_MODEL": False})
-UnetTemperaturePatchAny  = type("Unet Temperature any model", (UnetTemperaturePatch,), {"MODEL_NAME":"SD1","ANY_MODEL": True})
+UnetTemperaturePatchAny  = type("Unet Temperature any model", (UnetTemperaturePatch,), {"MODEL_NAME":"","ANY_MODEL": True})
