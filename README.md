@@ -30,7 +30,9 @@ It needs to be higher for smaller resolutions and lower for higher resolutions.
 
 To this effect I wrote a dynamic scaling temperature function. It sets itself relatively to the selected resolution.
 
-It is imperfect for higher resolutions but very effective for smaller.
+**TO USE IT**: Select the patch corresponding to your model (currently SD1.x or SDXL). Set the temperature slider at 0.
+
+It is imperfect for resolutions higher than 1.5x as the amplification becomes too strong. But it is very effective for smaller. For higher resolutions you can always set the temperature manually or do a double-pass.
 
 There seem to be a proportional trend. I would however need faster hardware to be able to generate more samples and become able to detect it. I opened the discussions for this repository if you feel like sharing your best settings.
 
