@@ -22,6 +22,12 @@ Like any other model patch:
 
 - Pay attention to not use SD1 nodes on SDXL and vice-versa or you will get a key not found error.
 
+## CLIP temperature at 0.75, 1 and 1.25. Prompt "a bio-organic living plant spaceship"
+
+![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
+
+It basically either refine or dilutes the precision.
+
 ----
 Most things below relates to the relation with resolution.
 ----
@@ -72,10 +78,6 @@ The temperature was applied to all layers except input 1 and 2, output 9, 10 and
 ![combined_pair_2](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/5e5403ea-2cb3-462c-a9f1-6cc7b1ddbaea)
 ![combined_pair_1](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/84fed1e4-a7ba-4f2a-8562-e3573f0aab8f)
 ![combined_pair_3](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/c6703c21-0d63-404e-9bf8-3a7c580f59e7)
-
-### CLIP temperature at 0.75, 1 and 1.25. Prompt "a bio-organic living plant spaceship"
-
-![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
 
 Workflow:
 
