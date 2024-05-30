@@ -22,7 +22,7 @@ Like any other model patch:
 
 - Pay attention to not use SD1 nodes on SDXL and vice-versa or you will get a key not found error.
 
-## Interesting side-effect:
+## Resolution unlocking side-effect:
 
 Changing the UNET temperature allows to obtain better results a different resolutions. While it is not the full solution to the scaling issues of Stable Diffusion, it is a strong clue indicating the possibility to sample at much higher (or lower) resolutions.
 
