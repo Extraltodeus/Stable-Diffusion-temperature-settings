@@ -21,10 +21,7 @@ It basically either refine or dilutes the precision.
 
 - Model specific nodes only have for difference a custom auto-scaling when set at 0
 
-## Specifities
-
-- The CLIP patch ignores the connections and patches the model within the memory. Simply disconnecting it does not revert the behavior. To revert to default behavior set it at 1 or reload the model without the node connected. It is the only node ignoring the connections and does not modify anything but the connected CLIP model.
-- For SD1 and SDXL nodes: **settings the temperature at zero will use a dynamic scale proportional to the resolution**. It is good for lower resolutions but not on point for higher.
+- The CLIP temperature patches the attention within the VRAM/RAM. The modification ignores connections but is only linked to what is loaded. To get default behavior set the temperature at one.
 
 ## Requirements
 
