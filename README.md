@@ -1,19 +1,6 @@
 # Stable-Diffusion-temperature-settings
 Provides the ability to set the temperature for both UNET and CLIP. For ComfyUI.
 
-## The nodes
-
-![image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/2d04cb28-2a1d-4384-8e62-9e9a6b0829dc)
-
-## Specifities
-
-- The CLIP patch ignores the connections and patches the model within the memory. Simply disconnecting it does not revert the behavior. To revert to default behavior set it at 1 or reload the model without the node connected. It is the only node ignoring the connections and does not modify anything but the connected CLIP model.
-- For SD1 and SDXL nodes: **settings the temperature at zero will use a dynamic scale proportional to the resolution**. It is good for lower resolutions but not on point for higher.
-
-## Requirements
-
-Requires pytorch 2.3 and above.
-
 ## Usage
 
 Like any other model patch:
@@ -26,6 +13,23 @@ Like any other model patch:
 ![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
 
 It basically either refine or dilutes the precision.
+
+
+## All the nodes
+
+![image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/2d04cb28-2a1d-4384-8e62-9e9a6b0829dc)
+
+- Model specific nodes only have for difference a custom auto-scaling when set at 0
+
+## Specifities
+
+- The CLIP patch ignores the connections and patches the model within the memory. Simply disconnecting it does not revert the behavior. To revert to default behavior set it at 1 or reload the model without the node connected. It is the only node ignoring the connections and does not modify anything but the connected CLIP model.
+- For SD1 and SDXL nodes: **settings the temperature at zero will use a dynamic scale proportional to the resolution**. It is good for lower resolutions but not on point for higher.
+
+## Requirements
+
+Requires pytorch 2.3 and above.
+
 
 ----
 Most things below relates to the relation with resolution.
