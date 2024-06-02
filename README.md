@@ -23,10 +23,6 @@ It basically either refine or dilutes the precision.
 
 - The CLIP temperature patches the attention within the VRAM/RAM. The modification ignores connections but is only linked to what is loaded. To get default behavior set the temperature at one.
 
-## Requirements
-
-Requires pytorch 2.3 and above.
-
 
 ----
 Most things below relates to the relation with resolution.
