@@ -36,7 +36,7 @@ It needs to be higher for smaller resolutions and lower for higher resolutions.
 
 To this effect I wrote a dynamic scaling temperature function. It sets itself relatively to the selected resolution. As it is a work in progress, for now it is only good for smaller resolution and tends to become too strong over 1.5x the base resolution.
 
-**TO USE IT** justelect the patch corresponding to your model and set the temperature slider at 0.
+To use it just select the patch corresponding to your model and set the temperature slider at 0.
 
 # Examples
 
