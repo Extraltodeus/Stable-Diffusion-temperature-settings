@@ -21,8 +21,7 @@ It basically either refine or dilutes the precision.
 
 - Model specific nodes only have for difference a custom auto-scaling when set at 0
 
-- The CLIP temperature patches the attention within the VRAM/RAM. The modification ignores connections but is only linked to what is loaded. To get default behavior set the temperature at one.
-
+- The CLIP temperature patches the attention within the VRAM/RAM on the connected clip model. The modification ignores connections but is only linked to what is loaded. To get default behavior set the temperature at one.
 
 ----
 Most things below relates to the relation with resolution.
