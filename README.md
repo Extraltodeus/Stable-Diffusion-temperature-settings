@@ -34,14 +34,9 @@ Changing the UNET temperature allows to obtain better results a different resolu
 
 It needs to be higher for smaller resolutions and lower for higher resolutions.
 
-To this effect I wrote a dynamic scaling temperature function. It sets itself relatively to the selected resolution.
+To this effect I wrote a dynamic scaling temperature function. It sets itself relatively to the selected resolution. As it is a work in progress, for now it is only good for smaller resolution and tends to become too strong over 1.5x the base resolution.
 
-**TO USE IT**: Select the patch corresponding to your model (currently SD1.x or SDXL). Set the temperature slider at 0.
-
-It is imperfect for resolutions higher than 1.5x as the amplification becomes too strong. But it is very effective for smaller. For higher resolutions you can always set the temperature manually or do a double-pass or use the "light" intensity.
-
-There seem to be a proportional trend. I would however need faster hardware to be able to generate more samples and become able to detect it. I opened the discussions for this repository if you feel like sharing your best settings.
-
+**TO USE IT** justelect the patch corresponding to your model and set the temperature slider at 0.
 
 # Examples
 
