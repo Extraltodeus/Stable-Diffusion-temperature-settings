@@ -7,49 +7,19 @@ EPSILON = 1e-4
 SD_layer_dims = {
     "SD1" : {"input_1": 4096,"input_2": 4096,"input_4": 1024,"input_5": 1024,"input_7": 256,"input_8": 256,"middle_0": 64,"output_3": 256,"output_4": 256,"output_5": 256,"output_6": 1024,"output_7": 1024,"output_8": 1024,"output_9": 4096,"output_10": 4096,"output_11": 4096},
     "SDXL": {"input_4": 4096,"input_5": 4096,"input_7": 1024,"input_8": 1024,"middle_0": 1024,"output_0": 1024,"output_1": 1024,"output_2": 1024,"output_3": 4096,"output_4": 4096,"output_5": 4096},
+    "Disabled":{}
     }
 
-layers_SD15 = {
-    "input":[1,2,4,5,7,8],
-    "middle":[0],
-    "output":[3,4,5,6,7,8,9,10,11],
-}
-
-layers_SDXL = {
-    "input":[4,5,7,8],
-    "middle":[0],
-    "output":[0,1,2,3,4,5],
-}
-
-revert_dim  = lambda x: 8 * math.sqrt(x)
-printed_var = ""
-def cprint(var):
-    global printed_var
-    str_var = str(var)
-    if printed_var != str_var:
-        print(" ",str_var)
-        printed_var = str_var
-
-def dynamic_scale_attention(layer_name, model_name, q_size_1, q_size_2, **kwargs):
-    return 1 / (math.sqrt(q_size_1) * (SD_layer_dims[model_name][layer_name] ** 0.5 / q_size_2 ** 0.5) ** 0.5)
-
-def dynamic_scale_attention_light(layer_name, model_name, q_size_1, q_size_2, **kwargs):
-    return 1 / (math.sqrt(q_size_1  * (SD_layer_dims[model_name][layer_name] ** 0.5 / q_size_2 ** 0.5) ** 0.5))
-
-def temp_non_zero_div(layer_name, model_name, q_size_1, q_size_2, **kwargs):
-    return 1 / (math.sqrt(q_size_1) * EPSILON)
-
-auto_temp_methods = {"normal": dynamic_scale_attention, "light": dynamic_scale_attention_light, "clip":temp_non_zero_div}
+def should_scale(mname,lname,q2):
+    if mname != "Disabled" and lname in SD_layer_dims[mname]:
+        return q2 != SD_layer_dims[mname][lname]
+    return False
 
 class temperature_patcher():
-    def __init__(self, temperature, layer_name = "", model_name="", eval_string = "", method="medium", base_resolution=(512,512), target_resolution=(512,512)):
-        self.temperature = temperature
+    def __init__(self, temperature, layer_name = "", model_name=""):
+        self.temperature = max(temperature,EPSILON)
         self.layer_name  = layer_name
         self.model_name  = model_name
-        self.eval_string = eval_string
-        self.method      = auto_temp_methods[method]
-        self.base_resolution   = base_resolution
-        self.target_resolution = target_resolution
 
     def pytorch_attention_with_temperature(self, q, k, v, extra_options, mask=None, attn_precision=None):
         heads = extra_options if isinstance(extra_options, int) else extra_options['n_heads']
@@ -60,45 +30,29 @@ class temperature_patcher():
             (q, k, v),
         )
 
-        if self.eval_string != "":
-            if self.layer_name != "":
-                layer_dim = SD_layer_dims[self.model_name][self.layer_name]
-            q_size_1 = q.size(-1)
-            q_size_2 = q.size(-2)
-            c = []
-            evals_strings = self.eval_string.split(";")
-            if len(evals_strings) > 1:
-                for i in range(len(evals_strings[:-1])):
-                    c.append(eval(evals_strings[i]))
-            scale = eval(evals_strings[-1])
-        else:
-            scale  = 1 / (math.sqrt(q.size(-1)) * self.temperature) if self.temperature > 0 else \
-                self.method(layer_name=self.layer_name, model_name=self.model_name, q_size_1=q.size(-1), q_size_2=q.size(-2),
-                            base_resolution=self.base_resolution,target_resolution=self.target_resolution)
+        scale = 1 / (math.sqrt(q.size(-1)) * self.temperature)
+        
+        out = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=mask, dropout_p=0.0, is_causal=False, scale=scale)
 
-        out = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=mask, dropout_p=0.0, is_causal=False,scale=scale)
+        if should_scale(self.model_name, self.layer_name,q.size(-2)):
+            out *= math.log(q.size(-2) ** 0.5) / math.log(SD_layer_dims[self.model_name][self.layer_name] ** 0.5)
+
         out = (
             out.transpose(1, 2).reshape(b, -1, heads * dim_head)
         )
+
         return out
 
 class UnetTemperaturePatch:
     @classmethod
     def INPUT_TYPES(s):
-        if not s.ANY_MODEL:
-            required_inputs = {f"{key}_{layer}": ("BOOLEAN", {"default": True}) for key, layers in s.TOGGLES.items() for layer in layers}
-        else:
-            required_inputs = {}
+        required_inputs = {}
         required_inputs["model"] = ("MODEL",)
-        required_inputs["Temperature"]  = ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01, "round": 0.01})
-        required_inputs["Attention"]    = (["both","self","cross"],)
-        if s.MODEL_NAME in ["SDXL","SD1"]:
-            required_inputs["DSA_intensity"] = (["normal","light"],)
-        # required_inputs["eval_string"] = ("STRING", {"multiline": True})
+        required_inputs["Temperature"] = ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01, "round": 0.01})
+        required_inputs["Attention"]   = (["self","cross","both"],)
+        required_inputs["Dynamic_Scale_Attention"] = (["Disabled","SDXL","SD1"],)
         return {"required": required_inputs}
-    
-    ANY_MODEL  = False
-    LAYER_NAME = None
+
     TOGGLES = {}
     RETURN_TYPES = ("MODEL","STRING",)
     RETURN_NAMES = ("Model","String",)
@@ -106,33 +60,23 @@ class UnetTemperaturePatch:
 
     CATEGORY = "model_patches/Temperature"
 
-    def patch(self, model, Temperature, Attention, DSA_intensity="normal", eval_string="", **kwargs):
-        model_name = self.__class__.MODEL_NAME
-        any_model  = self.__class__.ANY_MODEL
-
-        if not any_model:
-            layer_names = kwargs
-        else:
-            layer_names = {f"{l}_{n}": True for l in ["input", "middle", "output"] for n in range(12)}
-
+    def patch(self, model, Temperature, Attention, Dynamic_Scale_Attention, **kwargs):
         m = model.clone()
         levels = ["input","middle","output"]
-        parameters_output = {level:[] for level in levels}
-        
-        for key, toggle_enabled in layer_names.items():
+        layer_names = {f"{l}_{n}": True for l in levels for n in range(12)}
+
+        for key, toggle in layer_names.items():
             current_level = key.split("_")[0]
-            if current_level in levels and toggle_enabled:
-                b_number = int(key.split("_")[1])
-                parameters_output[current_level].append(b_number)
-                patcher = temperature_patcher(Temperature,method=DSA_intensity if model_name in ["SDXL","SD1"] else "clip",layer_name=key,model_name=model_name,eval_string=eval_string)
+            b_number = int(key.split("_")[1])
 
-                if Attention in ["both","self"]:
-                    m.set_model_attn1_replace(patcher.pytorch_attention_with_temperature, current_level, b_number)
-                if Attention in ["both","cross"]:
-                    m.set_model_attn2_replace(patcher.pytorch_attention_with_temperature, current_level, b_number)
+            if Attention in ["both","self"]:
+                patcher = temperature_patcher(Temperature,layer_name=key,model_name=Dynamic_Scale_Attention)
+                m.set_model_attn1_replace(patcher.pytorch_attention_with_temperature, current_level, b_number)
+            if Attention in ["both","cross"]:
+                patcher = temperature_patcher(Temperature,layer_name=key,model_name=Dynamic_Scale_Attention)
+                m.set_model_attn2_replace(patcher.pytorch_attention_with_temperature, current_level, b_number)
 
-        parameters_as_string = "\n".join(f"{k}: {','.join(map(str, v))}" for k, v in parameters_output.items())
-        parameters_as_string = f"Temperature: {Temperature}\n{parameters_as_string}\nAttention: {Attention}"
+        parameters_as_string = f"Temperature: {Temperature}\nAttention: {Attention}\nDynamic scale: {Dynamic_Scale_Attention}"
         return (m, parameters_as_string,)
 
 class CLIPTemperaturePatch:
@@ -147,9 +91,8 @@ class CLIPTemperaturePatch:
     CATEGORY = "model_patches/Temperature"
     
     def patch(self, clip, Temperature):
-        print(f"\n\n\nThe CLIP patch ignores the connection. Set at 1 to get default behavior. Or reload the model without this node.\n\n\n")
         def custom_optimized_attention(device, mask=None, small_input=True):
-            return temperature_patcher(Temperature,method="clip").pytorch_attention_with_temperature
+            return temperature_patcher(Temperature).pytorch_attention_with_temperature
         
         def new_forward(self, x, mask=None, intermediate_output=None):
             optimized_attention = custom_optimized_attention(x.device, mask=mask is not None, small_input=True)
@@ -173,36 +116,3 @@ class CLIPTemperaturePatch:
             clip_encoder_instance_g.forward = types.MethodType(new_forward, clip_encoder_instance_g)
         
         return (clip,)
-
-class temperatureForScaleAsFloat:
-    def __init__(self):
-        pass
-    
-    @classmethod
-    def INPUT_TYPES(s):
-        return {
-            "required": {
-                "base_resolution" : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
-                "target_width"    : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
-                "target_height"   : ("INT", {"default": 1024, "min": 0,"max": 10000,"step": 8}),
-                "multiply_value_by" : ("FLOAT", {"default": 1, "min": 0, "max": 100,"step": 0.01}),
-                "shift_value_by"  : ("FLOAT", {"default": 0, "min": -100,"max": 100,"step": 0.01}),
-                "print_value" : ("BOOLEAN", {"default": False}),
-            }
-        }
-
-    FUNCTION = "simple_output"
-    RETURN_TYPES = ("FLOAT",)
-    CATEGORY = "model_patches/Temperature"
-    
-    def simple_output(self, base_resolution,target_width,target_height,multiply_value_by,shift_value_by,print_value):
-        dsa = ((base_resolution / (target_width*target_height) ** 0.5) ** 0.5) * multiply_value_by + shift_value_by
-        if print_value:
-            print(f"\nDynamic scale attention is {dsa}\n")
-        return (dsa,)
-
-UnetTemperaturePatchSDXL = type("Unet Temperature SDXL", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": True})
-UnetTemperaturePatchSD15 = type("Unet Temperature SD1",  (UnetTemperaturePatch,), {"TOGGLES": layers_SD15,"MODEL_NAME":"SD1", "ANY_MODEL": True,})
-UnetTemperaturePatchSDXLpl = type("Unet Temperature SDXL per layer", (UnetTemperaturePatch,), {"TOGGLES": layers_SDXL,"MODEL_NAME":"SDXL","ANY_MODEL": False})
-UnetTemperaturePatchSD15pl = type("Unet Temperature SD1 per layer",  (UnetTemperaturePatch,), {"TOGGLES": layers_SD15,"MODEL_NAME":"SD1", "ANY_MODEL": False})
-UnetTemperaturePatchAny  = type("Unet Temperature any model", (UnetTemperaturePatch,), {"MODEL_NAME":"","ANY_MODEL": True})
