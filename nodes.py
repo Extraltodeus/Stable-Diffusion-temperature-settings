@@ -2,7 +2,7 @@ import torch
 import math
 import types
 
-EPSILON = 1e-4
+EPSILON = 1e-16
 
 SD_layer_dims = {
     "SD1" : {"input_1": 4096,"input_2": 4096,"input_4": 1024,"input_5": 1024,"input_7": 256,"input_8": 256,"middle_0": 64,"output_3": 256,"output_4": 256,"output_5": 256,"output_6": 1024,"output_7": 1024,"output_8": 1024,"output_9": 4096,"output_10": 4096,"output_11": 4096},
@@ -11,6 +11,7 @@ SD_layer_dims = {
     }
 
 def should_scale(mname,lname,q2):
+    if mname == "": return False
     if mname != "Disabled" and lname in SD_layer_dims[mname]:
         return q2 != SD_layer_dims[mname][lname]
     return False
@@ -49,7 +50,7 @@ class UnetTemperaturePatch:
         required_inputs = {}
         required_inputs["model"] = ("MODEL",)
         required_inputs["Temperature"] = ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01, "round": 0.01})
-        required_inputs["Attention"]   = (["self","cross","both"],)
+        required_inputs["Attention"]   = (["both","self","cross"],)
         required_inputs["Dynamic_Scale_Attention"] = (["Disabled","SDXL","SD1"],)
         return {"required": required_inputs}
 
