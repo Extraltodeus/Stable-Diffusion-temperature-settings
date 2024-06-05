@@ -28,6 +28,6 @@ Note: The CLIP temperature patches the attention within the VRAM/RAM on the conn
 
 # Patreon
 
-Give an incentive to contributors:
+Provide an incentive to contributors:
 
 https://www.patreon.com/extraltodeus
