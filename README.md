@@ -5,7 +5,7 @@ Provides the ability to set the temperature for both UNET and CLIP. For ComfyUI.
 
 Like any other model patch:
 
-![image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/32b73433-df6a-4c49-99a6-5ddf21a4777a)
+![image](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/baafc52a-452b-499f-8aec-2092b019e71f)
 
 
 ## CLIP temperature at 0.75, 1 and 1.25. Prompt "a bio-organic living plant spaceship"
