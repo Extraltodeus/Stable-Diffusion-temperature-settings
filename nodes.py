@@ -43,10 +43,10 @@ class temperature_patcher():
             if self.eval_string != "":
                 out  = eval(self.eval_string)
             else:
-                if self.model_name == "SD1":
-                    out *= math.log(q.size(-2), ldim)
-                else:
+                if self.model_name == "SDXL":
                     out *= math.log(q.size(-2)*(q.size(-1)**2/ldim), ldim)
+                else:
+                    out *= math.log(q.size(-2), ldim)
 
         out = (
             out.transpose(1, 2).reshape(b, -1, heads * dim_head)
