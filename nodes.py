@@ -41,9 +41,12 @@ class temperature_patcher():
         if should_scale(self.model_name, self.layer_name,q.size(-2)):
             ldim = SD_layer_dims[self.model_name][self.layer_name]
             if self.eval_string != "":
-                out = eval(self.eval_string)
+                out  = eval(self.eval_string)
             else:
-                out *= math.log(q.size(-2), ldim)
+                if self.model_name == "SD1":
+                    out *= math.log(q.size(-2), ldim)
+                else:
+                    out *= math.log(q.size(-2)*(q.size(-1)**2/ldim), ldim)
 
         out = (
             out.transpose(1, 2).reshape(b, -1, heads * dim_head)
