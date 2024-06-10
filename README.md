@@ -1,6 +1,8 @@
 # Stable-Diffusion-temperature-settings
 Provides the ability to set the temperature for both UNET and CLIP. For ComfyUI.
 
+I also added a togglable function compatible with SD 1.x models and SDXL/Turbo which helps to preserve quality weither it is for downscaling or upscaling.
+
 ## Usage
 
 Like any other model patch:
