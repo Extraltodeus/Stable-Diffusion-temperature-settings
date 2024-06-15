@@ -1,7 +1,10 @@
+from functools import partial
 import torch
 import math
 import types
 import comfy.model_management
+from comfy.model_patcher import ModelPatcher
+from comfy.sd import CLIP
 
 EPSILON = 1e-16
 
@@ -36,7 +39,7 @@ class temperature_patcher():
         )
 
         scale = 1 / (math.sqrt(q.size(-1)) * self.temperature)
-        
+
         out = torch.nn.functional.scaled_dot_product_attention(q, k, v, attn_mask=mask, dropout_p=0.0, is_causal=False, scale=scale)
         if should_scale(self.model_name, self.layer_name,q.size(-2)):
             ldim = SD_layer_dims[self.model_name][self.layer_name]
@@ -69,7 +72,7 @@ class UnetTemperaturePatch:
 
     CATEGORY = "model_patches/Temperature"
 
-    def patch(self, model, Temperature, Attention, Dynamic_Scale_Attention, eval_string="", **kwargs):
+    def patch(self, model: ModelPatcher, Temperature, Attention, Dynamic_Scale_Attention, eval_string="", **kwargs):
         if Dynamic_Scale_Attention and str(model.size) in models_by_size:
             model_name = models_by_size[str(model.size)]
             print(f"Model detected for scaling: {model_name}")
@@ -100,15 +103,17 @@ class CLIPTemperaturePatch:
         return {"required": { "clip": ("CLIP",),
                               "Temperature": ("FLOAT", {"default": 1.0, "min": 0.0, "max": 10.0, "step": 0.01}),
                               }}
-    
+
     RETURN_TYPES = ("CLIP",)
     FUNCTION = "patch"
     CATEGORY = "model_patches/Temperature"
-    
-    def patch(self, clip, Temperature):
+
+    def patch(self, clip: CLIP, Temperature):
+        c = clip.clone()
+
         def custom_optimized_attention(device, mask=None, small_input=True):
             return temperature_patcher(Temperature).pytorch_attention_with_temperature
-        
+
         def new_forward(self, x, mask=None, intermediate_output=None):
             optimized_attention = custom_optimized_attention(x.device, mask=mask is not None, small_input=True)
 
@@ -123,11 +128,10 @@ class CLIPTemperaturePatch:
                     intermediate = x.clone()
             return x, intermediate
 
-        clip_encoder_instance = clip.cond_stage_model.clip_l.transformer.text_model.encoder
-        clip_encoder_instance.forward = types.MethodType(new_forward, clip_encoder_instance)
+        if getattr(c.patcher.model, "clip_g", None) is not None:
+            c.patcher.add_object_patch("clip_g.transformer.text_model.encoder.forward", partial(new_forward, c.patcher.model.clip_g.transformer.text_model.encoder))
 
-        if getattr(clip.cond_stage_model, f"clip_g", None) is not None:
-            clip_encoder_instance_g = clip.cond_stage_model.clip_g.transformer.text_model.encoder
-            clip_encoder_instance_g.forward = types.MethodType(new_forward, clip_encoder_instance_g)
-        
-        return (clip,)
+        if getattr(c.patcher.model, "clip_l", None) is not None:
+            c.patcher.add_object_patch("clip_l.transformer.text_model.encoder.forward", partial(new_forward, c.patcher.model.clip_l.transformer.text_model.encoder))
+
+        return (c,)
