@@ -1,0 +1,14 @@
+[project]
+name = "stable-diffusion-temperature-settings"
+description = "Provides the ability to set the temperature for both UNET and CLIP. For ComfyUI."
+version = "1.0.0"
+license = "LICENSE"
+
+[project.urls]
+Repository = "https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "Stable-Diffusion-temperature-settings"
+Icon = ""
