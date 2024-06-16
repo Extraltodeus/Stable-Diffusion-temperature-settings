@@ -15,9 +15,6 @@ Like any other model patch:
 ![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
 
 
-Note: The CLIP temperature patches the attention within the VRAM/RAM on the connected clip model. The modification ignores connections but is only linked to what is loaded. To get default behavior set the temperature at one or reload the model.
-
-
 # Patreon
 
 Provide an incentive to contributors:
