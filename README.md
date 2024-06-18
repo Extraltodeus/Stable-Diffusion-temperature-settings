@@ -28,7 +28,10 @@ Like any other model patch:
 
 ## Using SD v1-5-pruned-emaonly:
 
-Lower temperature applied to all layers except input 1 and 2, output 9, 10 and 11. At 0.71. Only on self-attention. Resolution at 1024*512. The temperature matches 1/2**2 and the surface is double the normal resolution.
+- Lower temperature applied to all layers except input 1 and 2, output 9, 10 and 11.
+- At 0.71.
+- Only self-attention
+- Resolution at 1024*512
 
 ![combined_pair_2](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/5e5403ea-2cb3-462c-a9f1-6cc7b1ddbaea)
 ![combined_pair_1](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/84fed1e4-a7ba-4f2a-8562-e3573f0aab8f)
