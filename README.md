@@ -25,10 +25,19 @@ Like any other model patch:
 ![335007140-10991fbe-4123-46d2-8069-cfaece9e77ec](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/b8e33680-cc4c-420c-b128-6b790a05ca12)![335007077-4d17e360-0e28-4fd2-98ae-8f6944114815](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/ff1c7ef5-1bbb-49bb-b53d-f14c4efe44bd)
 
 
+# Other examples on SDXL.
+
+256x256 without / with
+
+
+![00752UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/66659a07-0532-4fc9-9993-7229ba3160e8)
+![00750UI_00001_](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/e8525a12-5d9c-41a3-ba5a-7c2fd65e2c2c)
+
+
 
 ## Using SD v1-5-pruned-emaonly:
 
-- Lower temperature applied to all layers except input 1 and 2, output 9, 10 and 11.
+- Lower temperature applied to all layers except input 1 and 2, output 9, 10 and 11 which were ignored.
 - At 0.71.
 - Only self-attention
 - Resolution at 1024*512
