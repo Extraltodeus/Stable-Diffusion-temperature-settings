@@ -15,6 +15,14 @@ Like any other model patch:
 ![combined_image_new](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/12034834-43d0-44a5-a603-6c87d1bc6e5d)
 
 
+## The temperature scaling option allows to avoid smudged details during an upscale:
+
+Without / with
+
+![234523423](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/9fad70c5-bbdc-4243-88a6-2963e7b47491)
+
+This does not include tiled upscales since the tiling uses smaller latents.
+
 ## Using SDXL, 512x512, 256x256, 128x128 without / with modification on the U-Net:
 
 ![335007111-bf6d7ef0-9c18-4436-8037-6b60a6a37ce2](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/e47775e0-1b36-46f9-9eac-5467ed8b6715)![335007043-0c4540ab-1840-4230-940a-07a9e38ef38a](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/3aecf1b1-85a8-4362-a7e1-e76048ca5f4b)
