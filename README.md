@@ -21,7 +21,7 @@ Without / with
 
 ![234523423](https://github.com/Extraltodeus/Stable-Diffusion-temperature-settings/assets/15731540/9fad70c5-bbdc-4243-88a6-2963e7b47491)
 
-This does not include tiled upscales since the tiling uses smaller latents.
+This does not include tiled upscales since the tiling uses smaller latents as the workaround for this well known issue.
 
 ## Using SDXL, 512x512, 256x256, 128x128 without / with modification on the U-Net:
 
