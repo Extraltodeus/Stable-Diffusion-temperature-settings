@@ -45,6 +45,8 @@ This does not include tiled upscales since the tiling uses smaller latents as th
 
 ## Using SD v1-5-pruned-emaonly:
 
+### This is one of my first tests and I only display it as the proof of concept, exposing the possibility to fix the scaling issues with the U-Net
+
 - Lower temperature applied to all layers except input 1 and 2, output 9, 10 and 11 which were ignored.
 - At 0.71.
 - Only self-attention
