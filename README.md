@@ -64,3 +64,10 @@ This is one of my first tests and I only display it as the proof of concept, exp
 Provide an incentive to contributors:
 
 https://www.patreon.com/extraltodeus
+
+
+# Pro tip:
+
+Did you know that my first activity is to write creative model merging functions?
+
+While the code is too much of a mess to be shared, I do expose and share my models. You can find them in this [gallery](https://github.com/Extraltodeus/shared_models_galleries)! 😁
